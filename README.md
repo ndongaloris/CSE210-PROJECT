@@ -1,4 +1,4 @@
-# cse210-student-template-for Jared Ndonga
+# cse210-student-template-for-Jared Ndonga
 This is the starter code for students in CSE 210.
 
 This repository contains the starter code for many different projects. They are arranged as follows:
