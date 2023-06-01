@@ -3,57 +3,31 @@ using System;
 public class Word
 {
     // store the reference as a string
-    private string Reference;
-    private string _randomWords;
-    private int _index;
+    private bool _hidden = false;
     // contains the sliced scripture
-    private List<string> _scripture = new List<string> { };
+    private string _scripture;
     // contain the sliced version of the verse
-    private List<string> _versePart = new List<string> { };
-    // deal with hidden words so that it will not repeat
-    private List<int> _remainingWords = new List<int> { };
-    public void GetReferenceVerse(List<string> scripture)
+    public Word(string word)
     {
-        _scripture = scripture;
-        // for the reference part
-        int startReference = 0;
-        int endReference = 2;
-        List<string> referencePart = _scripture.GetRange(startReference, endReference); //method that get the range of element in a list 
-        Reference = string.Join(" ", referencePart);
-
-        // for the verse part
-        int startVerse = 2;
-        int endVerser = _scripture.Count() - endReference;
-        _versePart = _scripture.GetRange(startVerse, endVerser);//method that get the range of element in a list
-
-        _remainingWords = Enumerable.Range(0, _versePart.Count).ToList(); //Generates a sequence of integral numbers within a specified range and put it in a list format.
+        _scripture = word;
     }
-    public void HideAndShow(int prompt)
+    public void hide() 
     {
-        if (_remainingWords.Count > 0)
+        // change the _hidden attribute when it's true
+        _hidden = true;
+    }
+    public string visibility()
+    {
+
+        // define the visibility and change the word to "_" if _hidden is true
+        if (_hidden)
         {
-            int numWordToHide = prompt; // take the number of words to hide from the user and store it
-            for (int i = 0; i < numWordToHide; i++)
-            {
-                if (numWordToHide > _remainingWords.Count()) //handle the case where the number of of words left to be listed less, and prevent the code to crash
-                {
-                    numWordToHide = _remainingWords.Count();
-                }
-                Random random = new Random();
-                _index = random.Next(_remainingWords.Count()); // retrieve a random index for the list
-                int chosenIndex = _remainingWords[_index]; //retrieve the value of that index
-                _remainingWords.RemoveAt(_index); //remove that string from the list so that it won't be repeated
-
-                _randomWords = _versePart[chosenIndex];
-                _versePart[chosenIndex] = new string('_', _randomWords.Count());
-            }
-
-            Console.Clear();
-            Console.WriteLine($"{Reference} {string.Join(" ", _versePart)}");
+            return _scripture = new string('_', _scripture.Count());
         }
         else
         {
-            System.Environment.Exit(1); //stop the program when all the word has been hidden
+            return _scripture;
+
         }
     }
 }

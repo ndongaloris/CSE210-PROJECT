@@ -1,53 +1,65 @@
 //  Keeps track of the reference and the text of the scripture. Can hide words and get the rendered
 public class Scripture
-{
-    private List<string> _scriptureList = new List<string> { };
-    // store a scripture of one verse as a string
-    private string _singleReference;
-    // store a scripture of multiple verse as a string
-    private string _multiReference;
-    // store a scripture with only one verse
-    private string _verse;
-    // store a scripture with multiple verses
-    private string _verse2;
-    // store the list of the sliced verse
-    private List<string> _verseList = new List<string> { };
-    // contain the return random scripture chosen
-    private string _chosenScripture;
+{   
+    // store the reference
+    private Reference _reference;
+    // store the sliced verse 
+    private List<string> _listWords = new List<string>{};
+    // a list that track the remaining words to help not repeat hiding the same word
+    private List<string> _remainingWords = new List<string>{};
     // set store the reference information into the destined attribute
-    public void SetReference(string info, string info2)
+    private string _chosenScripture;
+    public Scripture(string verse, Reference reference)
     {
-        _singleReference = info;
-        _multiReference = info2;
-    }
-    // set store the verse information into the destined attribute
-    public void SetVerse()
-    {
-        _verse = "God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.";
-        _verse2 = "Trust in the Lord with all thine heart; and lean not unto thine own understanding. In all thy ways acknowledge him, and he shall direct thy paths.";
-    }
-    // Get the scripture and then append it to a list
-    public void GetScripture()
-    {
-        _scriptureList.Add($"{_singleReference} {_verse}");
-        _scriptureList.Add($"{_multiReference} {_verse2}");
-    }
-    // split a string into a list
-    public List<string> splitIntoList()
-    {
-        string[] words = _chosenScripture.Split(" ");
+        _reference = reference; //set the reference
+        _chosenScripture = verse; //set the verse
+        string[] words = _chosenScripture.Split(" "); //sliced the verse into multiple string to
         foreach (string word in words)
         {
-            _verseList.Add(word);
+            _listWords.Add(word); // append the sliced verse into the _listWords
+            _remainingWords.Add(word); // append the sliced verse into the _remainingWords to be tracked
         }
-        return _verseList;
+        
     }
-    public void Display()
+    public void HideAndShow(int prompt)
     {
-        Random scripture = new Random();
-        int scriptureIndex = scripture.Next(_scriptureList.Count()); //generate a random scripture index
-        _chosenScripture = _scriptureList[scriptureIndex]; //retrieve the scripture from the index and store it into the attribute
-        Console.Clear(); //clear the terminal
-        Console.WriteLine(_chosenScripture);
+         if (_remainingWords.Count > 0)
+        {
+            int numWordToHide = prompt; // take the number of words to hide from the user and store it
+            for (int i = 0; i < numWordToHide; i++)
+            {
+                if (numWordToHide > _remainingWords.Count()) //handle the case where the number of of words left to be listed less, and prevent the code to crash
+                {
+                    numWordToHide = _remainingWords.Count();
+                }
+                Random random = new Random();
+                int RandomWord_index = random.Next(_remainingWords.Count()); //take a random index form that list
+                string RandomWord = _remainingWords[RandomWord_index]; //get the random word
+                _remainingWords.RemoveAt(RandomWord_index); //remove the random word from the _remainingWords list so that it will not be repeated
+                Word theWord  = new Word(RandomWord); //use the Word class 
+                theWord.hide(); //change the possibility of hiding the word to true
+                string hiddenWord = theWord.visibility(); //return the hidden word
+                for (int j = 0; j < _listWords.Count(); j++)
+                {
+                    // the hidden word into the _listWords to hide it
+                    if (RandomWord == _listWords[j]){
+                        _listWords[j] = hiddenWord;
+                    }
+                }
+           }
+        }
+
+        else
+        {
+            System.Environment.Exit(1); //stop the program when all the word has been hidden
+        }
     }
+   public void Display()
+   {
+        _chosenScripture = string.Join(" ", _listWords); //return the _listWords content as a string (sentence)
+        Console.Clear();
+        Console.WriteLine($"{_reference.GetReference()} {_chosenScripture}");
+
+   }
+    
 }
