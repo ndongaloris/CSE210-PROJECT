@@ -1,0 +1,112 @@
+@startuml acitvity 
+
+    Activity <|-- Breathing : Inherit
+    Activity <|-- Listing : Inherit
+    Activity <|-- Reflection : Inherit
+    Reflection --> Main : association
+    Breathing --> Main : association
+    Listing --> Main : association
+    class **Activity**
+    {
+        __**Behavior**__
+        Displaying the starting message
+        Decription of the activity 
+        Pausing while showing a spinner
+        Pausing while showing a countdown timer
+        Displaying the ending message
+        --**Attribute**--
+        protected int _durationInSec;
+        //store the amount of time in second//
+        protected string _description;
+        //store the desctiption//
+        protected string _activityName;
+        //store the the activity name//
+        protected string _closing// ;
+        //store the closing message//
+        --**Constructor**--
+        + Activity()
+        + Activity(string name, string decription, int time)
+        //get the name, desctiption and define the time//
+        + GetIntroPrompt()
+        //get the starting message and diplay it//
+        + GetSpinnerTimer()
+        //Define the spinner timer//
+        + GetCountDouwnTimer()
+        //Define the countdown timer//
+        + GetClosingMessage()
+        //Display the closing message//
+
+    }
+    class **Breathing**
+    {
+        __**Behavior**__
+        Inherit from the Activity class
+        Series of messages:  Breath in... Breath out...
+        Countdown breathing
+        --**Attribute**--
+        private string _breathIn;
+        //contain the breathin...string//
+        private string _breatOut;
+        //contain the breathout...string//
+        --Constructor--
+        + Breathing() : base (name, description, time)
+        //inherit from the base//
+        + InAndOut()
+        //Display the procces of the activity//
+
+    }
+    class **Reflection**
+    {
+        __**Behavior**__
+        Inherit from the Activity class
+        Random prompt for the user wait until the <Enter> key is pressed
+        Generate Randomly showing question for a period of time.
+        Display the prompt
+        Reflection time
+        --**Attribute**--
+        private List<string> _thinkPromptList = new List<string>{} ;
+        //store a list on prompt that the user will use to think//
+        private List<string> _reflectQuestion = new List<string>{};
+        //store the list of question to depend the thinkprompt question//
+        --Constructor--
+        + Relfection() : base (name, description, time)
+        //inherit from the base//
+        + GetPrompt()
+        //ask the think// 
+        + GetQuestion()
+        //diplay random questions to depend the reflection//
+
+    }
+    class **Listing** 
+    {
+        __**Behavior**__
+        Inherit from the Activity class
+        Prompt a random question
+        Display the prompt
+        Display questions about the prompt and get answers
+        --**Attribute**--
+        private List<string> _promptList = new List<string>{} ;
+        //store the a list of question for the user//
+        private List<string> _inputList = new List<string>{} ;
+        //store the a list of answer from the user//
+        --Constructor--
+        + Listing() : base (name, description, time)
+        //inherit from the base//
+        + GetQuestion() 
+        //Ask and Display random question and wait for the answer//
+        //Display the number of question answered//
+        + GetInput(sting )
+        //Get the answer from the user and store it inside the input list//
+    }
+    class  Main
+    {
+        __**Behavior**__
+        Store the menu
+        MenuOptions (string);
+        Use of Loops
+        Implement conditonal statements 
+        Call the different Constructor according to the user input
+
+        lucid chart
+    }
+@enduml
