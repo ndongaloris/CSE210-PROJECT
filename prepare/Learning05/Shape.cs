@@ -1,7 +1,7 @@
 using System.Security.Cryptography.X509Certificates;
-public class Shape
+public abstract class Shape
 {
-    private abstract string __color;
+    private string __color;
     public Shape(){}
     public Shape(string color){
         SetColor(color);
