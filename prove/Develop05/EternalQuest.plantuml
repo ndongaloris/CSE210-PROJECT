@@ -1,0 +1,120 @@
+@startuml EnternalQuest
+Goal <|--SimpleGoal 
+Goal <|--EternalGoal 
+Goal <|--CheckListGoal
+
+
+    class CheckListGoal
+    {
+        __**Behavior**__
+        Provide for a checklist goal that must be accomplished 
+        a certain number of times to be complete.
+        Each time the user records this goal they gain some value, 
+        but when they achieve the desired amount, 
+        they get an extra bonus.
+        ask for a number of time the task can be accomplish for bonus
+        ask the amount or number of bonus  for that many times
+        track the number of time the task was completed
+        after competion of the total task, goal can be checked off
+        store the awared points and check the box when the total number
+        of tasks are fully completed is complete also track the points
+        __**Attribute**__
+        +public int _awaredPoint
+        //store the awared points//
+        +public int _bonusPoint
+        //store the bonus points
+        __**Constractors**__
+        +public CheckListGoal(string goal, string decription, int point, 
+                                    int awardPOint, int bonus point, int numberOfTime)
+        // with the base contructor, it takes as extra the awarded point,//
+        //the bons point, and the number of time the task needs to be done to be complete// 
+        +public override IsComplete
+        // check if he task is complete and return true if it is//
+        +public override RecordEvent
+        //record when the task is complete, and check the box when it is full completed//
+        //award the points//
+        +public override TheGoal
+        //store the gaol and its elements//
+       
+    }
+    class (abstract)Goal
+    {
+        __**Behavior**__
+        //ask title of the goal//
+        //ask for a shot description//
+        //ask number of point associate with the goal//
+        __**Attribute**__
+        protected string _goalTitle;
+        //store the tilte of the goal//
+        protect string _desctiption;
+        //strore the description of the goal//
+        protect string _point
+        //store the numbre of points//
+        protected boolean _check = false
+        //determine if bix is cheked or not// 
+        protected string _checkbox;
+        //store the origianl checkbox//
+        __**Constractors**__
+        +public Goal(string goal, string decription, int point)
+        +public GetGoal()
+        //get the goal//
+        +public SetGoal(string goal, string decription, int point)
+        //set the goal//
+        +public abstract IsComplete()
+        //return true if the goal is completed//
+        +public abstract RecordEvent()
+        //allow the user to record an event//
+        //(meaning they have accomplished a goal and should receive points)//
+        //check the goal if possible//
+        +public abstract TheGoal
+        //define the goal and the checkbox foramt(goal sentence)//
+ 
+    }
+    class SimpleGoal
+    {
+        __**Behavior**__
+        inherit from the Goal class
+        Provide for simple goals that can be marked complete and 
+        the user gains some value.
+        store the awared points and check the box when the task 
+        is complete also track the points
+        __**Attribute**__
+        +public int _awaredPoint
+        //store the awarded points//
+        __**Constractors**__
+        +public SimpleGoal(string goal, string decription, int point, int awardPOint,)
+        //sync with the base contructor//
+        +public override IsComplete
+        //define if the task is complete or not//
+        +public override RecordEvent
+        //over write the method so that it can check the box once// 
+        //the task completed//
+        +public override TheGoal
+        //define the goal and the checkbox foramt(goal sentence)//
+        //for this class//
+        
+    }
+    class EternalGoal
+    {
+        __**Behavior**__
+        provide for eternal goals that are never complete,
+        but each time the user records them, they gain some value
+        store the awared points and track the points when the task 
+        and it cannot be checked off
+        is complete
+        __**Attribute**__
+        +public int _awaredPoint
+        //store the awarded point//
+        __**Constractors**__
+        +public EternalGoal(string goal, string decription, int point, int awardPOint,)
+        +public override IsComplete
+        //check if the task is complete and return tru if it is//
+        +public override RecordEvent
+        //awards the points but does not check the box//
+        +public override TheGoal
+        //store the gaol and its elements//
+
+
+    }
+
+@enduml
