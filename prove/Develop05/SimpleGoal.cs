@@ -1,3 +1,4 @@
+using System.Drawing;
 public class SimpleGoal : Goal
 {
     private int _awardedPoint;
@@ -12,12 +13,10 @@ public class SimpleGoal : Goal
     {
         return base._check = true;
     } 
-    public override void RecordEvent()
+    public override void RecordEvent(int point)
     {
-        base._basePoint += _awardedPoint;
-        _checkbox = (_check == true ? "[X]" : "[ ]");
         Console.WriteLine($"Congratulations! You have earned {_awardedPoint} points!");
-        Console.WriteLine($"You now have {base._basePoint} points");
+        Console.WriteLine($"You now have {point + _awardedPoint} points");
     }
 
     public override string GetStringRepresentation()

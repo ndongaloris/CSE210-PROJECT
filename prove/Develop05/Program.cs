@@ -56,7 +56,7 @@ class Program
                             Console.Write("What is the bonus fo accomplishing it that many times ? ");
                             int bonusPoint = int.Parse(Console.ReadLine());
                         
-                            c1 = new ChecklistGoal(name, description,awardedPoint, numOfTIme, bonusPoint);
+                            c1 = new ChecklistGoal(name, description,awardedPoint, bonusPoint, numOfTIme);
                             goalList.Add(c1);
                             break;
                         default:
@@ -88,35 +88,71 @@ class Program
                     string fileName1 = Console.ReadLine();
                     
                     fileManager = new ManageFile(fileName1);
-                    goalList = fileManager.ReadFile();
-                    accumulatedPoint = fileManager.GetPoints();
+                    foreach(Goal f in fileManager.ReadFile())
+                    {
+                        goalList.Add(f);
+                    }
+                    accumulatedPoint += fileManager.GetPoints();
                     break;
                 case 5:
-                    Console.WriteLine("The goals are: ");
-                    int k = 1;
-                    foreach (var goal in goalList)
+                 if(goalList.Count == 0)
                     {
-                        Console.WriteLine($"    {k}.{goal.GetGoal()}");
-                        k++;
+                         Console.WriteLine("There is nothing to be recorded");
                     }
-                    Console.Write("Which goal did you accomplish? ");
-                    int accomplishedGoal = int.Parse(Console.ReadLine());
-                    accomplishedGoal--;
-                    for (int J = 0; J < goalList.Count;){
-                        goalList[accomplishedGoal].IsComplete();
-                        goalList[accomplishedGoal].RecordEvent();
-                        Console.WriteLine(goalList[accomplishedGoal].Display());
-                        accumulatedPoint += goalList[accomplishedGoal].GetPoint();
-                        break;
+                    else
+                    {
+                        Console.WriteLine("The goals are: ");
+                        int k = 1;
+                        foreach (var goal in goalList)
+                        {
+                            Console.WriteLine($"    {k}.{goal.GetGoal()}");
+                            k++;
+                        }
+                        Console.Write("Which goal did you accomplish? ");
+                        int accomplishedGoal = int.Parse(Console.ReadLine());
+                        accomplishedGoal--;
+                        for (int J = 0; J < goalList.Count;)
+                        {
+                            goalList[accomplishedGoal].IsComplete();
+                            goalList[accomplishedGoal].RecordEvent(accumulatedPoint);
+                            Console.WriteLine(goalList[accomplishedGoal].Display());
+                            accumulatedPoint += goalList[accomplishedGoal].GetPoint();
+                            break;
+                        }
                     }
 
                     break;
                 case 6:
+                    if(goalList.Count == 0)
+                    {
+                         Console.WriteLine("There is nothing to be removed");
+                    }
+                    else
+                    {
+                        Console.WriteLine("The goals are: ");
+                        int R = 1;
+                        foreach (var goal in goalList)
+                        {
+                            Console.WriteLine($"    {R}.{goal.GetGoal()}");
+                            R++;
+                        }
+                        Console.Write("Which goal did you accomplish? ");
+                        int removeGoal = int.Parse(Console.ReadLine());
+                        removeGoal--;
+                           
+                            for (int J = 0; J < goalList.Count;)
+                            {
+                                goalList.Remove(goalList[removeGoal]);
+                                break;
+                            }
+                    }
+                    break;
+                case 7:
                     System.Environment.Exit(1);
                     break;
                 
                 default:
-                    Console.WriteLine("\nInvalid input \nPlease a digit between 1 - 6");
+                    Console.WriteLine("\nInvalid input \nPlease a digit between 1 - 7");
                     break;
             }
             
@@ -132,7 +168,8 @@ class Program
                 "   3. Save Goals",
                 "   4. Load Goals",
                 "   5. Record Event",
-                "   6. Quit"
+                "   6. Remove a Goal",
+                "   7. Quit"
             }; 
             foreach (string el in menu)
             {

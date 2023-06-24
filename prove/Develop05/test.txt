@@ -1,0 +1,7 @@
+330
+ChecklistGoal,sport,push ups,10,50,2,3,True
+SimpleGoal,sleeping,sleeping at 2 today,50,True
+EternalGoal,scripture,study daily,10
+SimpleGoal,reading,daily scripture study,50,True
+EternalGoal,test,test eternal goal,100
+ChecklistGoal,test,test checklist goal,50,100,5,4,True

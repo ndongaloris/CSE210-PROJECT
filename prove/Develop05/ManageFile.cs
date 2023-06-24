@@ -47,7 +47,7 @@ public class ManageFile
         using (StreamWriter outputFile = new StreamWriter(_fileName))
         {
             // You can add text to the file with the WriteLine method
-            outputFile.WriteLine($"Points: {points}");
+            outputFile.WriteLine($"{points}");
             foreach (Goal goal in goals)
             {
                 outputFile.WriteLine($"{goal.GetStringRepresentation()}");
