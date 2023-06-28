@@ -6,11 +6,18 @@ class Program
 {
     static void Main(string[] args)
     {
+        // Looks like there are few things missing from the specs. 
+        // In the JournalEntry class you have a list of strings for the entries 
+        // but it should have attributes for the prompt, response and the date.
+        //  The JournalData class should have a List of JournalEntry objects with 
+        // functions to add an entry and display all then entries along with the load 
+        // and save functions that you have. All of your classes and functions should use 
+        // Titlee Case so JournalEntry should be JournalEntry.
         Console.WriteLine("Welcome to the Journal program");
 
-        journalEntry storeData = new journalEntry();
-        promptGenerator prompting = new promptGenerator();
-        journalData fileName1 = new journalData();
+        JournalEntry storeData = new JournalEntry();
+        PromptGenerator prompting = new PromptGenerator();
+        JournalData fileName1 = new JournalData();
         while (true)
         {
             Console.WriteLine("Please select one of the following:");
@@ -22,29 +29,27 @@ class Program
             {
                 if (storeData._count == 0)
                 {
-                    prompting.moreInfo();
+                    prompting.MoreInfo();
                 }
-
-                prompting.promptsDisplay();
-                storeData.addEntry(prompting._sentence, prompting._prompt, prompting._title, 
+                prompting.PromptsDisplay();
+                storeData.SetEntry(prompting._sentence, prompting._prompt, prompting._title, 
                                 prompting._author, prompting._goal);
+                fileName1.AddEntry(storeData);
             }
             else if (choice == 2)
             {
-                storeData.entryDisplay();
+                fileName1.EntryDisplay();
             }
             else if (choice == 3)
             {
 
-                fileName1.loadFile(storeData._entries);
+                fileName1.LoadFile();
             }
             else if (choice == 4)
-            
             {
-                prompting.goals();
-                storeData.addEntry(prompting._sentence, prompting._prompt, prompting._title, 
-                                    prompting._author, prompting._goal); //call twice to make sure that the goals are saved into the file
-                fileName1.saveFile(storeData._entries);
+                prompting.Goals();
+                storeData.SetEntry(prompting._title,prompting._author, prompting._prompt, prompting._sentence, prompting._goal); //call twice to make sure that the goals are saved into the file
+                fileName1.SaveFile();
             }
             else if (choice == 5)
             {
