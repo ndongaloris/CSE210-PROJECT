@@ -5,28 +5,31 @@ public class Word
     // store the reference as a string
     private bool _hidden = false;
     // contains the sliced scripture
-    private string _scripture;
+    private string _word;
     // contain the sliced version of the verse
-    public Word(string word)
-    {
-        _scripture = word;
-    }
-    public void hide() 
+    public Word (string word) {
+        _word = word;
+    } 
+    public bool Hide() 
     {
         // change the _hidden attribute when it's true
-        _hidden = true;
+        return _hidden = true;
     }
-    public string visibility()
+    public bool GetVisibility()
+    {
+        return _hidden;
+    }
+    public string Visibility()
     {
 
         // define the visibility and change the word to "_" if _hidden is true
         if (_hidden)
         {
-            return _scripture = new string('_', _scripture.Count());
+            return new string('_', _word.Count());
         }
         else
         {
-            return _scripture;
+            return _word;
 
         }
     }
