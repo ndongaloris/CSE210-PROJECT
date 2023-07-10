@@ -1,7 +1,7 @@
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 public class Task : GeneralEntity
 {
-    [JsonProperty]
+    [JsonPropertyOrder(6)]
     protected DateOnly _dueDate;
     protected Member _member;
     public Task(){}

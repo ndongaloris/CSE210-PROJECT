@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 public class PersonalProject : Project
 {
     private List<Project> projects = new List<Project>{};

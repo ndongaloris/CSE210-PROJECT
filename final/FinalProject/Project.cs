@@ -1,9 +1,9 @@
 using System.Text.Json.Serialization;
 public class Project : GeneralEntity
 {
-    [JsonRequired]
+    [JsonPropertyOrder(5)]
     protected DateOnly _endingDate;
-    [JsonRequired]
+    [JsonPropertyOrder(6)]
     protected List<Task> _tasks = new List<Task>{};
     public Project(){}
     public Project(string title, string description, DateOnly start, DateOnly end, List<Task> tasks, bool status = false): base(title, description, status,start)
