@@ -12,7 +12,7 @@ public abstract class Project : GeneralEntity
         _simple = tasks;
         _recurring = tasks2;
     }
-    public List<SimpleTask> simple {get{return _simple;}set{_simple = value;}}
+    public List<SimpleTask> Simple {get{return _simple;}set{_simple = value;}}
     public List<RecurringTask> Recursing {get{return _recurring;}set{_recurring= value;}}
     public List<Task> GetTask()
     {

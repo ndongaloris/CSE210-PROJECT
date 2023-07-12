@@ -20,11 +20,11 @@ public abstract class GeneralEntity
         _dueDate = dueTime;
         _status = status;
     }
-    public string title {get{return _title;}set{_title = value;}}
-    public string description {get{return _description;}set{_description = value;}}
-    public bool status {get{return _status;}set{_status = value;}}
-    public DateOnly startingDate {get{return _startingDate;}set{_startingDate = value;}}
-    public DateOnly dueDate {get{return _dueDate;}set{_dueDate = value;}}
+    public string Title {get{return _title;}set{_title = value;}}
+    public string Description {get{return _description;}set{_description = value;}}
+    public bool Status {get{return _status;}set{_status = value;}}
+    public DateOnly StartingDate {get{return _startingDate;}set{_startingDate = value;}}
+    public DateOnly DueDate {get{return _dueDate;}set{_dueDate = value;}}
     public string GetTitle()
     {
         return _title;

@@ -476,7 +476,7 @@ class Program
                 case 7:
                 var load = saveLoad.LoadProject();
                     projects.Clear();
-                    foreach(var element in load.persoProject0)
+                    foreach(var element in load.PersoProject)
                     {
                         personal.Clear();
                         projects.Add(element);

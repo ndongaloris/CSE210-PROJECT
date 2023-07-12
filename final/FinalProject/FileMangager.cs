@@ -7,25 +7,25 @@ using System.Text.Json.Serialization;
 [JsonSourceGenerationOptions(GenerationMode =JsonSourceGenerationMode.Default, PropertyNamingPolicy =JsonKnownNamingPolicy.CamelCase, WriteIndented = true)]
 public  class FileManager 
 {
-    private TeamProject[] _teamProject1 = new TeamProject[] {};
-    private PersonalProject[] _persoProject1 = new PersonalProject[] {};
-    public TeamProject[] teamProject1 {get{return _teamProject1;}set{_teamProject1 = value;}}
-    public PersonalProject[] persoProject0 {get{return _persoProject1;} set{_persoProject1 = value;}}
+    private TeamProject[] _teamProject = new TeamProject[] {};
+    private PersonalProject[] _persoProject = new PersonalProject[] {};
+    public TeamProject[] TeamProject {get{return _teamProject;}set{_teamProject = value;}}
+    public PersonalProject[] PersoProject {get{return _persoProject;} set{_persoProject = value;}}
     public PersonalProject[] GetPersoProject()
     {
-        return _persoProject1;
+        return _persoProject;
     }
     public TeamProject[] GetTeamProject()
     {
-        return _teamProject1;
+        return _teamProject;
     }
     public void SetPersoProject(PersonalProject project)
     {
-        _persoProject1 = _persoProject1.Append(project).ToArray();
+        _persoProject = _persoProject.Append(project).ToArray();
     }
     public void SetTeamProject(TeamProject project1)
     {
-        _teamProject1 = _teamProject1.Append(project1).ToArray();
+        _teamProject = _teamProject.Append(project1).ToArray();
     }
     public void SaveProject(FileManager poe)
     {

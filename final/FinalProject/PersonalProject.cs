@@ -3,7 +3,7 @@ public class PersonalProject : Project
 {
     [JsonRequired]
     private string _myName;
-    public string name {get{return _myName;}set{_myName=value;}}
+    public string Name {get{return _myName;}set{_myName=value;}}
     public PersonalProject(){}
     public PersonalProject(string title, string description, DateOnly start, DateOnly end, string name, List<SimpleTask> tasks = null,List<RecurringTask> tasks2 = null, bool status = false) : base (title, description, start, end, tasks,tasks2, status)
     {
