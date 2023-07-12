@@ -1,31 +1,24 @@
+using System.Text.Json.Serialization;
 public class PersonalProject : Project
 {
-    private List<Project> projects = new List<Project>{};
+    [JsonRequired]
+    private string _myName;
+    public string name {get{return _myName;}set{_myName=value;}}
     public PersonalProject(){}
-    public PersonalProject(string title, string description, DateOnly start, DateOnly end, List<Task> tasks, bool status = false) : base (title, description, start, end, tasks, status)
+    public PersonalProject(string title, string description, DateOnly start, DateOnly end, string name, List<SimpleTask> tasks = null,List<RecurringTask> tasks2 = null, bool status = false) : base (title, description, start, end, tasks,tasks2, status)
     {
-        base._tasks = tasks;
+        _myName = name;
     }
-
-    public List<Project> GetProject()
+    public string GetMyName()
     {
-        return projects;
+        return _myName;
     }
-    public void SetProject(Project project)
+    public void SetMyName(string name)
     {
-        projects.Add(project);
-    }
-    public override void Display()
-    {
-        int i = 1;
-        foreach (Project project in projects)
-        {
-            Console.WriteLine($"{i}. {project.GetTitle()}");
-            i++;
-        }
+        _myName = name;
     }
     public override string GetEntity()
     {
-        return $"PersonalProject : [{base.RecordEvent()}] {base.GetTitle()} {base.GetDescription()} {base.GetStartDate()} {base.GetEndDate()}";
+        return $"PersonalProject : [{base.RecordEvent()}] {base.GetTitle()} {base.GetDescription()} {base.GetStartDate()} {base.GetDueDate()}";
     }
 }

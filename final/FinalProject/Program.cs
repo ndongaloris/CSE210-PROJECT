@@ -9,19 +9,21 @@ class Program
         FileManager saveLoad = new FileManager();
         Member person = new Member();
         PersonalProject pProject = new PersonalProject();
-        TeamProject tProject = new TeamProject();
-        SimpleTask sTask = new SimpleTask();
         RecurringTask rTask =  new RecurringTask();
+        SimpleTask sTask = new SimpleTask();
+        TeamProject tProject = new TeamProject();
         
+        List<PersonalProject> personal = new List<PersonalProject>();
+        List<TeamProject> team = new List<TeamProject>();
+        List<Project> projects = new List<Project>{};
         List<Member> people = new List<Member>{};
-        List<PersonalProject> personalProjects = new List<PersonalProject>{};
-        List<TeamProject> teamProjects = new List<TeamProject>{};
-        ArrayList pro = new ArrayList();
         Console.Clear();
         while (true)
         {
-            List<Task> personalTasks = new List<Task>(){};
-            List<Task> teamTasks = new List<Task>(){};
+            Task[] personalTasks = new Task[]{};
+            Task[] teamTasks = new Task[]{};
+            List<SimpleTask> simTasks = new List<SimpleTask>();
+            List<RecurringTask> recTasks = new List<RecurringTask>();
             List<string> menu = new List<string>
             {
                 "Menu Option:",
@@ -52,10 +54,10 @@ class Program
                     {
                         while (true)
                         {
-                            Console.Write("Please Enter the name of a member: ");
+                            Console.Write("Please Enter the name of a member and enter 'quit' if you are done: ");
                             // string memberName = Console.ReadLine();
                             
-                            string individual = Console.ReadLine();  
+                            string individual = Console.ReadLine().ToLower();  
                             if (individual == "quit")
                             {
                                 break;
@@ -66,15 +68,15 @@ class Program
                     }
                     
                     Console.Write("Enter the Project title: ");
-                    string projectTitle = Console.ReadLine();
+                    string projectTitle = Console.ReadLine().ToLower();
                     
                     Console.Write("Enter the Project description: ");
-                    string projectDescription = Console.ReadLine();
+                    string projectDescription = Console.ReadLine().ToLower();
                     
-                    Console.Write("Enter the Project starting date: ");
+                    Console.Write("Enter the Project starting date (mm-dd-yyyy): ");
                     DateOnly projectStartingDate = DateOnly.Parse(Console.ReadLine());
                     
-                    Console.Write("Enter the Project ending date: ");
+                    Console.Write("Enter the Project ending date (mm-dd-yyyy): ");
                     DateOnly projectEndingDate = DateOnly.Parse(Console.ReadLine());
                     
                     Console.WriteLine("You will now create a task for the project");
@@ -88,23 +90,23 @@ class Program
                         int taskType = int.Parse(Console.ReadLine());
                             
                         Console.Write("Enter the Task title: ");
-                        string taskTitle = Console.ReadLine();
+                        string taskTitle = Console.ReadLine().ToLower();
                         
                         Console.Write("Enter the Task description: ");
-                        string taskDescription = Console.ReadLine();
+                        string taskDescription = Console.ReadLine().ToLower();
                         
-                        Console.Write("Enter the Task starting date: ");
+                        Console.Write("Enter the Task starting date (mm-dd-yyyy): ");
                         DateOnly taskStartingDate = DateOnly.Parse(Console.ReadLine());
                         
-                        Console.Write("Enter the due date: ");
+                        Console.Write("Enter the due date (mm-dd-yyyy): ");
                         DateOnly dueTime = DateOnly.Parse(Console.ReadLine());
-
                         if (taskType == 1)
                         {
                             if (selectedProject == 1 )
                             { 
                                 sTask = new SimpleTask(taskTitle, taskDescription, dueTime, taskStartingDate);
-                                personalTasks.Add(sTask); 
+                                personalTasks.Append(sTask); 
+                                simTasks.Add(sTask);
                             } 
                             else
                             {
@@ -118,7 +120,8 @@ class Program
                                 int assignedMember = int.Parse(Console.ReadLine());
                                 assignedMember--;
                                 sTask = new SimpleTask(taskTitle, taskDescription, dueTime, taskStartingDate, people[assignedMember]);
-                                teamTasks.Add(sTask);
+                                teamTasks.Append(sTask);
+                                simTasks.Add(sTask);
                             }
                         }
                         else
@@ -128,7 +131,8 @@ class Program
                             if (selectedProject == 1 )
                             { 
                                 rTask = new RecurringTask(taskTitle, taskDescription, taskStartingDate, dueTime, numOfTime);
-                                personalTasks.Add(rTask); 
+                                personalTasks.Append(rTask);
+                                recTasks.Add(rTask);
                             } 
                             else
                             {
@@ -141,15 +145,14 @@ class Program
                                 int assignedMember = int.Parse(Console.ReadLine());
                                 assignedMember--;
                                 rTask = new RecurringTask(taskTitle, taskDescription, taskStartingDate, dueTime, numOfTime, people[assignedMember]);
-                                teamTasks.Add(rTask);
+                                teamTasks.Append(rTask);
+                                recTasks.Add(rTask);
                             }
                         }
                         
                         Console.Write("Do you want to add another Task: ");
-                        addTask = Console.ReadLine();
+                        addTask = Console.ReadLine().ToLower();
                         Console.Clear();
-                        pro.Add(personalProjects);
-                        pro.Add(teamProjects);
                     }while (addTask != "no");
                     
                     if (selectedProject == 1)
@@ -157,26 +160,24 @@ class Program
                         Console.Write("Please Enter your Name: ");
                         string myName =  Console.ReadLine();
                         
-                        pProject = new PersonalProject(projectTitle, projectDescription, projectStartingDate, projectEndingDate, personalTasks);
-                        pProject.SetProject(pProject);
-                        personalProjects.Add(pProject);
-                        pProject.SetTask(personalTasks);
-                        saveLoad.SetPersoProject(pProject);
+                        pProject = new PersonalProject(projectTitle, projectDescription, projectStartingDate, projectEndingDate, myName,simTasks, recTasks);
+                        projects.Add(pProject);
+                        personal.Add(pProject);
                     }
                     else if (selectedProject == 2)
                     {
-                        tProject = new TeamProject(projectTitle, projectDescription, projectStartingDate, projectEndingDate, teamTasks, tProject.GetTeamMember());
-                        tProject.SetProject(tProject);
+                        tProject = new TeamProject(projectTitle, projectDescription, projectStartingDate, projectEndingDate, simTasks,recTasks, tProject.GetTeamMember());
+                        projects.Add(tProject);
+                        team.Add(tProject);
                         tProject.SetTeamMember(people);
-                        teamProjects.Add(tProject);
-                        // tProject.SetTeamTask(teamTasks);
-                        tProject.SetTask(teamTasks);
-                        saveLoad.SetTeamProject(tProject);
+                        // tProject.SetTask(teamTasks);
+                        
                     }
                     else
                     {
                         { };
                     }
+                    Console.Clear();
                     break;
                 case 2:
                     Console.Write("1. Personal Project\n" + 
@@ -185,20 +186,26 @@ class Program
                     int selectedProject2 = int.Parse(Console.ReadLine());
                     if (selectedProject2 == 1)
                     {
-                        pProject.Display();
+                        int p = 1;
+                        foreach (var project in personal)
+                        {
+                            Console.WriteLine($"{p}. {project.GetTitle()}");
+                        }p++;
                         Console.Write("Enter the number of the project you want select: " );
                         int selectedProject5 = int.Parse(Console.ReadLine());
                         selectedProject5--;
-                        for (int i = 0; i < pProject.GetProject().Count(); i++)
+                        for (int i = 0; i < personal.Count(); i++)
                         {
-                            Console.WriteLine(pProject.GetProject()[selectedProject5].GetEntity());
+                            int t0 = 1;
+                            Console.WriteLine(personal[selectedProject5].GetEntity());
                             Console.Write("Would you like to display the tasks yes or no: ");
                             string taskDisplay =  Console.ReadLine(); 
                             if (taskDisplay == "yes")
                             {
-                                foreach (Task task in pProject.GetProject()[selectedProject5].GetTask())
+                                foreach (Task task in personal[selectedProject5].GetTask())
                                 {
-                                    Console.WriteLine(task.GetEntity());
+                                    Console.WriteLine($"   {t0}. {task.GetEntity()}");
+                                    t0++;
                                 }
                             }
                             else
@@ -209,20 +216,27 @@ class Program
                     }
                     else if (selectedProject2 == 2)
                     {
-                        tProject.Display();
+                        int p = 1;
+                        foreach (var project in team)
+                        {
+                            Console.WriteLine($"{p}. {project.GetTitle()}");
+                            p++;
+                        }
                         Console.Write("Enter the number of the project you want select: " );
                         int selectedProject5 = int.Parse(Console.ReadLine());
                         selectedProject5--;
-                        for (int i = 0; i < tProject.GetProject().Count(); i++)
+                        for (int i = 0; i < team.Count(); i++)
                         {
-                            Console.WriteLine(tProject.GetProject()[selectedProject5].GetEntity());
+                            int t = 1;
+                            Console.WriteLine(team[selectedProject5].GetEntity());
                             Console.Write("Would you like to display the tasks yes or no: ");
                             string taskDisplay2 =  Console.ReadLine(); 
                             if (taskDisplay2 == "yes")
                             {
-                                foreach (Task task in tProject.GetProject()[selectedProject5].GetTask())
+                                foreach (Task task in team[selectedProject5].GetTask())
                                 {
-                                    Console.WriteLine(task.GetEntity());
+                                    Console.WriteLine($"   {t}. {task.GetEntity()}");
+                                    t++;
                                 }
                             }
                             else
@@ -231,31 +245,7 @@ class Program
                             }
                         }
                     }
-                    else
-                        {
-                            // foreach( Project project in pProjects)
-                            // {
-                            //     project.Display();
-                            // }
-                            Console.Write("Enter the number of the project you want select: " );
-                            int selectedProject6 = int.Parse(Console.ReadLine());
-                            selectedProject6--;
-                            for (int z = 0; z < pProject.GetProject().Count(); z++)
-                            {
-                                Console.WriteLine(pProject.GetProject()[selectedProject6].GetEntity());
-                                Console.Write("Would you like to display the tasks yes or no: ");
-                                string taskDisplay1 =  Console.ReadLine(); 
-                                if (taskDisplay1 == "yes")
-                                {
-                                    foreach (Task task in pProject.GetProject()[selectedProject6].GetTask())
-                                    {
-                                        Console.WriteLine(task.GetEntity());
-                                    }
-                                }
-                            }
-                        }
                         Console.WriteLine();
-                    
                     break;
                 case 3:
                     Console.Write("1. Personal Project\n" + 
@@ -264,19 +254,26 @@ class Program
                     int selectedProject9 = int.Parse(Console.ReadLine());
                     if (selectedProject9 == 1)
                     {
-                        pProject.Display();
+                        
+                        int p = 1;
+                        foreach (var project in personal)
+                        {
+                            Console.WriteLine($"{p}. {project.GetEntity()}");
+                            p++;
+                        }
                         Console.Write("Enter the number of the project you want select: " );
                         int selectedProject4 = int.Parse(Console.ReadLine());
                         selectedProject4--;
-                        for (int i = 0; i < pProject.GetProject().Count(); i++)
+                        for (int i = 0; i < personal.Count(); i++)
                         {
-                            Console.WriteLine(pProject.GetProject()[selectedProject4].GetEntity());
+                            int c = 1;
+                            Console.WriteLine(personal[selectedProject4].GetEntity());
                             
                             Console.WriteLine("Here are the task: ");
-                            var listOfTaskInProject = pProject.GetProject()[selectedProject4].GetTask();
+                            var listOfTaskInProject = personal[selectedProject4].GetTask();
                             foreach (Task task in listOfTaskInProject)
                             {
-                                Console.WriteLine(task.GetEntity());
+                                Console.WriteLine($"  {c}. {task.GetEntity()}");
                             }
                             Console.Write("Which one would you like to record: ");
                             int toBeRecorded = int.Parse(Console.ReadLine());
@@ -286,31 +283,36 @@ class Program
                             bool allTask = false;
                             foreach (Task task in listOfTaskInProject)
                             {
-
                                 allTask = (task.GetStatus() == true ?true: false);
                             }
                             if (allTask == true)
                             {
-                                pProject.GetProject()[selectedProject4].IsComplete();
-                                pProject.GetProject()[selectedProject4].RecordEvent();
+                                personal[selectedProject4].IsComplete();
+                                personal[selectedProject4].RecordEvent();
                             }
                         }
                     }
                     else if (selectedProject9 == 2)
                     {
-                        tProject.Display();
+                        int p = 1;
+                        foreach (var project in team)
+                        {
+                            Console.WriteLine($"{p}. {project.GetEntity()}");
+                            p++;
+                        }
                         Console.Write("Enter the number of the project you want select: " );
                         int selectedProject5 = int.Parse(Console.ReadLine());
                         selectedProject5--;
-                        for (int i = 0; i < tProject.GetProject().Count(); i++)
+                        for (int i = 0; i < team.Count(); i++)
                         {
-                            Console.WriteLine(tProject.GetProject()[selectedProject5].GetEntity());
+                            int c = 1;
+                            Console.WriteLine(team[selectedProject5].GetEntity());
                             
                             Console.WriteLine("Here are the task: ");
-                            var listOfTaskInProject = tProject.GetProject()[selectedProject5].GetTask();
+                            var listOfTaskInProject = team[selectedProject5].GetTask();
                             foreach (Task task in listOfTaskInProject)
                             {
-                                Console.WriteLine(task.GetEntity());
+                                Console.WriteLine($"  {c}. {task.GetEntity()}");
                             }
                             Console.Write("Which one would you like to record: ");
                             int toBeRecorded = int.Parse(Console.ReadLine());
@@ -320,16 +322,16 @@ class Program
                             bool allTask = false;
                             foreach (Task task in listOfTaskInProject)
                             {
-
-                                allTask = (task.GetStatus() == true ?true: false);
+                                allTask = (task.GetStatus() == true?true: false);
                             }
                             if (allTask == true)
                             {
-                                tProject.GetProject()[selectedProject5].IsComplete();
-                                tProject.GetProject()[selectedProject5].RecordEvent();
+                                team[selectedProject5].IsComplete();
+                                team[selectedProject5].RecordEvent();
                             }
                         }
                     }
+                    Console.Clear();
                     break;
                 case 4:
                 Console.Write("1. Personal Project\n" + 
@@ -338,26 +340,37 @@ class Program
                     int selectedProject3 = int.Parse(Console.ReadLine());
                     if (selectedProject3 == 1)
                     {
-                        pProject.Display();
+                        int p = 1;
+                        foreach (var project in personal)
+                        {
+                            Console.WriteLine($"{p}. {project.GetEntity()}");
+                            p++;
+                        }
                         Console.Write("Which project would you like to delete from the list? ");
                         int taskToRemove = int.Parse(Console.ReadLine());
                         taskToRemove--;
-                        for (int i = 0; i < pProject.GetProject().Count(); i++)
+                        for (int i = 0; i < personal.Count(); i++)
                         {
-                            pProject.GetProject().RemoveAt(taskToRemove);
+                            personal.RemoveAt(taskToRemove);
                         }
                     }
                     else if (selectedProject3 == 2)
                     {
-                        tProject.Display();
+                        int p = 1;
+                        foreach (var project in team)
+                        {
+                            Console.WriteLine($"{p}. {project.GetEntity()}");
+                            p++;
+                        }
                         Console.Write("Which project would you like to delete from the list? ");
                         int taskToRemove = int.Parse(Console.ReadLine());
                         taskToRemove--;
-                        for (int i = 0; i < tProject.GetProject().Count(); i++)
+                        for (int i = 0; i < team.Count(); i++)
                         {
-                            tProject.GetProject().RemoveAt(taskToRemove);
+                            team.RemoveAt(taskToRemove);
                         }
                     }
+                    Console.Clear();
                     break;
                 case 5:
                 Console.Write("1. Personal Project\n" + 
@@ -366,69 +379,114 @@ class Program
                     int selectedProject30 = int.Parse(Console.ReadLine());
                     if (selectedProject30 == 1)
                     {
-                        pProject.Display();
+                        int p = 1;
+                        foreach (var project in personal)
+                        {
+                            Console.WriteLine($"{p}. {project.GetTitle()}");
+                            p++;
+                        }
                         Console.Write("Enter the number of the project you want select: " );
                         int selectedProject4 = int.Parse(Console.ReadLine());
                         selectedProject4--;
-                        for (int i = 0; i < pProject.GetProject().Count(); i++)
+                        for (int i = 0; i < personal.Count(); i++)
                         {
-                            Console.WriteLine(pProject.GetProject()[selectedProject4].GetEntity());
+                            int d = 1;
+                            Console.WriteLine(personal[selectedProject4].GetEntity());
                             
                             Console.WriteLine("Here are the task: ");
-                            var listOfTaskInProject = pProject.GetProject()[selectedProject4].GetTask();
+                            var listOfTaskInProject = personal[selectedProject4].GetTask();
                             foreach (Task task in listOfTaskInProject)
                             {
-                                Console.WriteLine(task.GetEntity());
+                                Console.WriteLine($"  {d}. {task.GetEntity()}");
                             }
                             Console.Write("Which one would you like to remove: ");
                             int toBeRemoved = int.Parse(Console.ReadLine());
                             toBeRemoved--;
-                            listOfTaskInProject.RemoveAt(toBeRemoved);
+                            if(personal[selectedProject4].GetSimpleTask().Contains(listOfTaskInProject[toBeRemoved]))
+                            {
+                                personal[selectedProject4].GetSimpleTask().Remove((SimpleTask)listOfTaskInProject[toBeRemoved]);
+                            }
+                            else if(personal[selectedProject4].GetRecurringTask().Contains(listOfTaskInProject[toBeRemoved]))
+                            {
+                                personal[selectedProject4].GetRecurringTask().Remove((RecurringTask)listOfTaskInProject[toBeRemoved]);
+                            }
                             
                         }
                     }
                     else if (selectedProject30 == 2)
                     {
-                        tProject.Display();
+                        int p = 1;
+                        foreach (var project in team)
+                        {
+                            Console.WriteLine($"{p}. {project.GetTitle()}");
+                            p++;
+                        }
                         Console.Write("Enter the number of the project you want select: " );
                         int selectedProject5 = int.Parse(Console.ReadLine());
                         selectedProject5--;
                         if (selectedProject30 == 1)
                         {
-                            tProject.Display();
+                            int p1 = 1;
+                            foreach (var project in team)
+                            {
+                                Console.WriteLine($"{p1}. {project.GetEntity()}");
+                                p1++;
+                            }
                             Console.Write("Enter the number of the project you want select: " );
                             int selectedProject4 = int.Parse(Console.ReadLine());
                             selectedProject4--;
-                            for (int i = 0; i < tProject.GetProject().Count(); i++)
+                            for (int i = 0; i < team.Count(); i++)
                             {
-                                Console.WriteLine(tProject.GetProject()[selectedProject4].GetEntity());
+                                int d = 1;
+                                Console.WriteLine(team[selectedProject4].GetEntity());
                                 
                                 Console.WriteLine("Here are the task: ");
-                                var listOfTaskInProject = tProject.GetProject()[selectedProject4].GetTask();
+                                var listOfTaskInProject = team[selectedProject4].GetTask();
                                 foreach (Task task in listOfTaskInProject)
                                 {
-                                    Console.WriteLine(task.GetEntity());
+                                    Console.WriteLine($"  {d}. {task.GetEntity()}");
                                 }
                                 Console.Write("Which one would you like to remove: ");
                                 int toBeRemoved = int.Parse(Console.ReadLine());
                                 toBeRemoved--;
-                                listOfTaskInProject.RemoveAt(toBeRemoved);
+                                if(team[selectedProject4].GetSimpleTask().Contains(listOfTaskInProject[toBeRemoved]))
+                                {
+                                    personal[selectedProject4].GetSimpleTask().Remove((SimpleTask)listOfTaskInProject[toBeRemoved]);
+                                }
+                                else if(team[selectedProject4].GetRecurringTask().Contains(listOfTaskInProject[toBeRemoved]))
+                                {
+                                    personal[selectedProject4].GetRecurringTask().Remove((RecurringTask)listOfTaskInProject[toBeRemoved]);
+                                }
                             }
                         }
                     }
+                    Console.Clear();
                     break;
                 case 6:
+                    foreach (var project in personal)
+                    {
+                        saveLoad.SetPersoProject(project);
+                    }
+                    foreach (var project in team)
+                    {
+                        saveLoad.SetTeamProject(project);
+                    }
                     saveLoad.SaveProject(saveLoad);
                     break;
                 case 7:
                 var load = saveLoad.LoadProject();
-                    foreach(var element in load.GetPersoProject())
+                    projects.Clear();
+                    foreach(var element in load.persoProject0)
                     {
-                        pProject.SetProject(element);
+                        personal.Clear();
+                        projects.Add(element);
+                        personal.Add(element);
                     }
                     foreach(var element in load.GetTeamProject())
                     {
-                        tProject.SetProject(element);
+                        team.Clear();
+                        projects.Add(element);
+                        team.Add(element);
                     }
                     break;
                 case 8:

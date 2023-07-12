@@ -1,11 +1,7 @@
 public class SimpleTask : Task
 {
-    private TimeSpan _normalFrequency;
     public SimpleTask(){}
-    public SimpleTask(string title, string description, DateOnly start, DateOnly dueTime, Member member = null, bool status = false) : base (title, description, dueTime, start, member, status)
-    {
-        _normalFrequency = new TimeSpan();
-    }
+    public SimpleTask(string title, string description, DateOnly start, DateOnly dueTime, Member member = null, bool status = false) : base (title, description, dueTime, start, member, status){}
     public override string GetEntity()
     {
         if(base._member == null)

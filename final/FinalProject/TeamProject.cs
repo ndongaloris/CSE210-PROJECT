@@ -1,20 +1,14 @@
+using System.Text.Json.Serialization;
 public class TeamProject : Project
 {
+    [JsonRequired]
     private List<Member> _teamMember = new List<Member>{};
-    private List<Project> projects = new List<Project>{};
+    [JsonRequired]
+    public List<Member> TeamMember {get{return _teamMember;}set{_teamMember=value;}}
     public TeamProject(){}
-    public TeamProject(string title, string description, DateOnly start, DateOnly end, List<Task> tasks, List<Member> names, bool status = false) : base (title, description, start, end, tasks, status)
+    public TeamProject(string title, string description, DateOnly start, DateOnly end, List<SimpleTask> tasks = null,List<RecurringTask> tasks2 = null, List<Member> names = null, bool status = false) : base (title, description, start, end, tasks,tasks2, status)
     {
         _teamMember = names;
-        base._tasks = tasks;
-    }
-    public List<Project> GetProject()
-    {
-        return projects;
-    }
-    public void SetProject(Project project)
-    {
-        projects.Add(project);
     }
     public List<Member> GetTeamMember()
     {
@@ -24,25 +18,9 @@ public class TeamProject : Project
     {
         _teamMember = name;
     }
-    public List<Task> GetTeamTask()
-    {
-        return base._tasks;
-    }
-    public void SetTeamTask(List<Task> task)
-    {
-        base._tasks = task;
-    }
-    public override void Display()
-    {
-        int i = 1;
-        foreach (Project project in projects)
-        {
-            Console.WriteLine($"{i}. {project.GetTitle()}");
-            i++;
-        }
-    }
+    
     public override string GetEntity()
     {
-        return $"PersonalProject : [{base.RecordEvent()}] {base.GetTitle()} - {base.GetDescription()} - {base.GetStartDate()} - {base.GetEndDate()}";
+        return $"PersonalProject : [{base.RecordEvent()}] {base.GetTitle()} - {base.GetDescription()} - {base.GetStartDate()} - {base.GetDueDate()}";
     }
 }

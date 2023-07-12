@@ -1,13 +1,13 @@
 using System.Text.Json.Serialization;
-public class Task : GeneralEntity
+
+public abstract class Task : GeneralEntity
 {
-    [JsonPropertyOrder(6)]
-    protected DateOnly _dueDate;
+    [JsonRequired]
     protected Member _member;
+    public Member member {get{return _member;}set{_member = value;}}
     public Task(){}
-    public Task(string title, string description, DateOnly start, DateOnly dueTime, Member member = null, bool status = false)  : base (title, description, status, start)
+    public Task(string title, string description, DateOnly start, DateOnly dueTime, Member member = null, bool status = false)  : base (title, description, status, start, dueTime)
     {
-        _dueDate = dueTime;
         _member = member;
     }
     public Member GetMember()
@@ -17,19 +17,5 @@ public class Task : GeneralEntity
     public void Member(Member member)
     {
         _member = member;
-    }
-
-    public DateOnly GetDueDate()
-    {
-        return _dueDate;
-    }
-    public virtual void SetDueDate(int extra)
-    {
-        _dueDate.AddDays(extra);
-    }
-
-    public override string GetEntity()
-    {
-        return " ";
     }
 }

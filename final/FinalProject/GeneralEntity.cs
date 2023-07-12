@@ -9,18 +9,22 @@ public abstract class GeneralEntity
     protected bool _status = false;
     [JsonPropertyOrder(4)]
     protected DateOnly _startingDate;
+    [JsonPropertyOrder(5)]
+    protected DateOnly _dueDate;
     public GeneralEntity(){}
-    public GeneralEntity(string title, string description, bool status, DateOnly start)
+    public GeneralEntity(string title, string description, bool status, DateOnly start, DateOnly dueTime)
     {
         _title = title;
         _description = description; 
         _startingDate = start; 
+        _dueDate = dueTime;
         _status = status;
     }
     public string title {get{return _title;}set{_title = value;}}
     public string description {get{return _description;}set{_description = value;}}
     public bool status {get{return _status;}set{_status = value;}}
     public DateOnly startingDate {get{return _startingDate;}set{_startingDate = value;}}
+    public DateOnly dueDate {get{return _dueDate;}set{_dueDate = value;}}
     public string GetTitle()
     {
         return _title;
@@ -49,11 +53,23 @@ public abstract class GeneralEntity
     {
         return _startingDate;
     }
+    public void SetStartDate(DateOnly date)
+    {
+        _startingDate = date ;
+    }
+    public virtual void SetDueDate(DateOnly date)
+    {
+        _dueDate = date;
+    }
+    public DateOnly GetDueDate()
+    {
+        return _dueDate;
+    }
     public virtual void IsComplete()
     {
         _status = true;
     }
-    public virtual string RecordEvent()
+    public string RecordEvent()
     {
         if (_status)
         {

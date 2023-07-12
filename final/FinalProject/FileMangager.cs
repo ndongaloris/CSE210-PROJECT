@@ -30,12 +30,13 @@ public  class FileManager
     public void SaveProject(FileManager poe)
     {
         var save = JsonSerializer.Serialize(poe);
-        File.AppendAllText("tst2.json", save);
+        
+        File.WriteAllText("test.json", save);
     }
 
     public FileManager LoadProject()
     {
-        var filePath = @"C:\Users\ndong\OneDrive\jared ndonga\CSE210-PROJECT\final\FinalProject\tst2.json";
+        string filePath = "test.json";
         var json = File.ReadAllText(filePath);
         
         var load = JsonSerializer.Deserialize<FileManager>(json);
