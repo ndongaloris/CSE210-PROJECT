@@ -3,11 +3,11 @@ using System.Text.Json.Serialization;
 public class RecurringTask : Task
 {
     [JsonRequired]
-    private int? _toDo;
+    private int _toDo;
     [JsonRequired]
-    private int? _numOfTimeDOne = 0;
-    public int? ToDo {get{return _toDo;}set{_toDo = value;}}
-    public int? _NumOfTimeDOneo {get{return _numOfTimeDOne;}set{_numOfTimeDOne = value;}}
+    private int _numOfTimeDOne = 0;
+    public int ToDo {get{return _toDo;}set{_toDo = value;}}
+    public int _NumOfTimeDOneo {get{return _numOfTimeDOne;}set{_numOfTimeDOne = value;}}
     public RecurringTask(){}
     public RecurringTask(string title, string description, DateOnly start, DateOnly dueTime, int numOfTime, Member member = null, bool status =  false) : base (title, description, start, dueTime,member, status)
     {
